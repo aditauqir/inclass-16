@@ -162,7 +162,7 @@ class _TriviaShowdownCloudScreenState extends State<TriviaShowdownCloudScreen> {
 
   // Auth fields
   User? _currentUser;
-  final TextEditingController _emailController = TextEditingController(text: 'usera@test.com');
+  final TextEditingController _emailController = TextEditingController(text: 'nooradi@example.com');
   final TextEditingController _passwordController = TextEditingController(text: 'Password123!');
   String? _authErrorMessage;
 
@@ -618,9 +618,12 @@ class _TriviaShowdownCloudScreenState extends State<TriviaShowdownCloudScreen> {
 
     try {
       if (testType == 'T10_userB_write_userA') {
+        final foreignUid = _currentUser!.uid == 'VeJJmOrHJNYzbakdJsiJhUhBvNG2'
+            ? 'FFPv8DJ4B0Q79gR02oK3Gj3dD1A2' // target other user
+            : 'VeJJmOrHJNYzbakdJsiJhUhBvNG2';
         final foreignRef = _firestore
             .collection('users')
-            .doc('uUbFtAlmQAfiGWFlfwUMdp5pxmo1') // User A UID
+            .doc(foreignUid)
             .collection('attempts')
             .doc('unauthorized-round');
         await foreignRef.set({
@@ -633,9 +636,12 @@ class _TriviaShowdownCloudScreenState extends State<TriviaShowdownCloudScreen> {
         });
         setState(() => _faultStatusMessage = 'FAILURE: Foreign write was allowed!');
       } else if (testType == 'T10_userB_read_userA') {
+        final foreignUid = _currentUser!.uid == 'VeJJmOrHJNYzbakdJsiJhUhBvNG2'
+            ? 'FFPv8DJ4B0Q79gR02oK3Gj3dD1A2' // target other user
+            : 'VeJJmOrHJNYzbakdJsiJhUhBvNG2';
         final foreignRef = _firestore
             .collection('users')
-            .doc('uUbFtAlmQAfiGWFlfwUMdp5pxmo1')
+            .doc(foreignUid)
             .collection('attempts')
             .doc('unauthorized-round');
         await foreignRef.get(const GetOptions(source: Source.server));
